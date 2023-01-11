@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-const textarea = ref("")
+const textarea = ref("");
 const error = ref("");
 const separator = ref("\n");
 const lession = ref("");
@@ -11,16 +11,18 @@ const separatorList = [
   { name: "Semicolon", value: ";" },
 ];
 function generate() {
-  if (error.value) {
-    setTimeout(() => {
+  setTimeout(() => {
+    if (error.value) {
       error.value = "";
-    }, 2000);
-  }
+    }
+  }, 2000);
   if (!textarea.value) {
     error.value = "Textarea is empty";
+    return
   }
   if (!textarea.value.includes("http") && !textarea.value.includes(".m3u8")) {
     error.value = "No .m3u8 link found";
+    return
   }
   const links = textarea.value.split(separator.value);
   console.log(links);
@@ -32,7 +34,6 @@ function generate() {
       }-${i + 1}.mp4";`;
     }
   }
-  console.log(result);
   if (result) {
     const el = document.createElement("textarea");
     el.value = result;
@@ -50,7 +51,7 @@ function generate() {
 </script>
 
 <template>
-  <section class="hero is-primary is-fullheight">
+  <section class="hero is-fullheight">
     <div class="hero-body">
       <div class="container has-text-centered">
         <div
@@ -65,7 +66,7 @@ function generate() {
         </div>
         <div
           v-if="success"
-          class="notification is-info"
+          class="notification is-primary"
         >
           <button
             @click="success = ''"
@@ -76,7 +77,7 @@ function generate() {
         <p class="title">.m3u8 Download Helper</p>
         <p class="subtitle">Paste Links here ⬇️</p>
         <textarea
-          class="textarea is-primary"
+          class="textarea"
           v-model="textarea"
           placeholder="Link with .m3u8 File"
         ></textarea>
@@ -111,7 +112,7 @@ function generate() {
           </div>
         </div>
         <button
-          class="mt-4 button is-info is-rounded is-medium"
+          class="mt-4 button is-primary is-rounded is-medium"
           @click="generate"
         >
           Generate command
